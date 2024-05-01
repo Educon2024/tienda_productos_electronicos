@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'poppins', sans-serif;
+    min-height: 100vh;
+    box-sizing: border-box;
+    text-align: center; 
+      
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px rgba(11, 2, 60, 0.2);
+    
+}
+table {
+    color: #020803;
+    font-size: 14px;
+    table-layout: fixed;
+    border-collapse: collapse;
+
+}
+thead {
+    background: rgba(209, 152, 191, 0.4);
+    
+}
+th {
+    padding: 20px 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    
+}
+th:hover {
+    background: #0acd85;
+}
+td{
+    padding: 15px;
+    border-bottom:solid 1px rgba(255 255 255 0.2) ;
+}
+form {
+    box-shadow:0 0 20px rgba(0, 0, 0, 0.2) ;
+    padding: 50px 35px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 380px;
+}
+.input-wrapper{
+    position: relative;
+    width: 305px;
+    margin-bottom: 35px ;
+}
+
+input {
+    color: #0d0d0d;
+    padding: 20px 15px 20px 60px;
+    width: 100%;
+    border-radius: 25px;
+    border: 0;
+    box-shadow: 0 0 20px rgba(192, 203, 251, 0.7);
+    outline: none;
+    font-size: 16px;
+}
+input::placeholder{
+    font-size: 16px;
+    color: #BBBBE2;
+}
+.input-icon {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    left: 20px;
+    top: 50px;
+    transform: translateY(-55%);
+}
+.btn-inicio {
+   
+    background-color: rgba(89, 10, 179, 0.7);
+        border: none;
+        color: #FFFFFF;
+        text-decoration: none;
+        font-size: 25px;
+        cursor: pointer;
+        border-radius: 1.4rem;
+        text-align: center;
+        padding: 12px 32px;
+}
+
+.btn-inicio:hover {
+    background: rgb(153, 47, 252);
+}
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(7, 16, 190, 0.7);
+    padding: 0 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 25px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: 700;
+
+}
+
+.navigation ul {
+    list-style: none;
+}
+.header .navigation ul li {
+    float: left;
+    position: relative;
+}
+.header .navigation ul li a {
+    font-size: 18px;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 20px;
+    display: block;
+    transition: all .2s ease;
+}
+.header .navigation ul li a.hover {
+    background-color: #685cfe;
+}
+.header .navigation ul li ul {
+    position: absolute;
+    right: 0;
+    width: 300px;
+    background-color: rgba(1, 1, 1, 0.7);
+    display: none;
+}
+.header .navigation ul li ul li a {
+    font-size: 15px;
+    text-transform: capitalize;
+}
+.header .navigation ul li ul li ul {
+    position: absolute;
+    top: 0;
+    right: 300px;
+
+}
+.header .navigation ul li ul li {
+    width: 100%;
+}
+.header .navigation ul li:hover > ul {
+    display: initial;
+}
+#toggle,
+.header label {
+    display: none;
+    cursor: pointer;
+
+}
+.administrador {
+    width: 45px;
+    height: 35px;
+
+}
+@media(max-width:991px) {
+    body {
+        padding: 10px;
+    }
+    form {
+        padding: 20px;
+        width: 100%;
+
+    }
+    .input-wrapper {
+        position: relative;
+        width: 88%;
+        margin-bottom: 35px;
+        }
+.input {
+    padding: 20px 0px 20px 45px;
+
+}
+.input-icon {
+    height: 20px;
+    width: 20px;
+}
+    .header label {
+        display: initial;
+    }
+    .header {
+        padding: 20px 10%;
+    }
+    .header .navigation {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: rgba(12, 5, 105, 0.7);
+        display: none;
+    }
+    .header .navigation ul li {
+        width: 100%;
+    }
+    .header .navigation ul li a {
+        padding: 8px 30px 8px 10%;
+
+    }
+    .header .navigation ul li ul {
+        position: relative;
+        width: 100%;
+        left: 0;
+    }
+    .header .navigation ul li ul li {
+        background-color: rgba(1, 1, 1, 0.7);
+    }
+    .header .navigation ul li ul li ul {
+        position: relative;
+        width: 100%;
+        left: 0;
+    }
+    #toggle:checked ~ .navigation {
+        display: block;
+    }
+}
