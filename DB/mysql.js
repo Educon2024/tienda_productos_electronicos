@@ -31,6 +31,7 @@ function conexionmysql(){
         }
     })
 }
+//esta es la primera consulta
 conexionmysql();
 function todos(tabla){
     return new Promise((resolve,reject)=>{
