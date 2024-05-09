@@ -1,4 +1,5 @@
 const express =require('express');
+const cors = require('cors');
 const respuestas=require('../../red/respuestas');
 const controllador=require('./index');
 const router=express.Router();
