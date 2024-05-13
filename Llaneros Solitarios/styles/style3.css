@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+}
+.container{
+<<<<<<< Updated upstream
+    background-color: #999;
+=======
+    background-color: f5f3f3;
+>>>>>>> Stashed changes
+}
+.container nav {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+    background-color: #FFF;
+    margin-bottom: 30px;
+    color: #333;
+}
+.nav-card{
+    display: none;
+}
+.container nav button{
+    display: none;
+}
+.nav-card li{
+    list-style: none;
+    padding: 1rem;
+    font-weight: bold;
+}
+.container nav i:hover > .buy-card{
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+}
+.container nav i:hover .nav-card{
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10px 0 10px;
+    border-bottom: solid thin #e1e1e1;
+}
+.container nav i:hover .buy-card > button{
+    display: block;
+    width: 90%;
+    padding: 1rem;
+    margin: 10px auto;
+    background-color: transparent;
+    border: solid thin #e1e1e1;
+    color: #494848;
+    cursor: pointer;
+}
+.container nav i:hover .buy-card > button:hover {
+    border: solid thin #494848;
+    transition: all .4s;
+}
+.container nav i{
+    font-size: 3rem;
+    cursor: pointer;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 5rem;
+    color: #222;
+}
+.grid {
+    display: grid;
+    max-width: 1100px;
+    justify-content: center;
+    gap: 20px;
+    margin: auto;
+    grid-template-columns: repeat(auto-fit, minmax(280px,280px));
+    padding-bottom: 50px;
+}
+.items {
+    background-color: #dbdbde;
+    border: solid thin #e1e1e1;
+}
+.items img {
+    width: 100%;
+    height: 300px;
+}
+.info{
+    padding: 10px;
+}
+.info h3{
+    font-size: 1.6rem;
+}
+.info p{
+    font-size: 1.5rem;
+}
+.info h3,
+.info p{
+    color: #222;
+    margin-bottom: 15px;
+}
+.precio p{
+    display: flex;
+    font-weight: bolder;
+}
+.precio{
+    font-size: 1.8rem;
+}
+.info button{
+    padding: 1rem;
+    width: 100%;
+    background-color: purple;
+    border: none;
+    outline: none;
+    color: #FFF;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 5px;   
+}
+.info button:hover{
+    background-color: #800010;
+    transition: all .3s;
+<<<<<<< Updated upstream
+}
+=======
+}
+>>>>>>> Stashed changes
