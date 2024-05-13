@@ -9,11 +9,8 @@ html {
     font-size: 62.5%;
 }
 .container{
-<<<<<<< Updated upstream
     background-color: #999;
-=======
     background-color: f5f3f3;
->>>>>>> Stashed changes
 }
 .container nav {
     width: 100%;
@@ -127,8 +124,5 @@ h1 {
 .info button:hover{
     background-color: #800010;
     transition: all .3s;
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
+
