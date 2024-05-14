@@ -3,7 +3,7 @@ const TABLA='clientes';
 module.exports=function (dbintyectada) {
     let db=dbintyectada;
     if (!db) {
-        db=require('../../../DB/mysql');
+        db=require('../../DB/mysql');
     }
     function todos(){
         return db.todos(TABLA);

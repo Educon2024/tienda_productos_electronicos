@@ -1,0 +1,217 @@
+body{
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+form {
+    box-shadow:0 0 20px rgba(0, 0, 0, 0.2) ;
+    padding: 50px 35px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 380px;
+}
+form h2 {
+    font-size: 35px;
+    color: #0d0d0d;
+    margin: 0;
+
+}
+form h2:hover {
+    background: #00c83c;
+}
+.input-wrapper{
+    position: relative;
+    width: 305px;
+    margin-bottom: 35px ;
+   
+}
+
+
+input {
+    color: #0d0d0d;
+    padding: 20px 15px 20px 60px;
+    width: 100%;
+    border-radius: 25px;
+    border: 0;
+    box-shadow: 0 0 20px rgba(192, 203, 251, 0.7);
+    outline: none;
+    font-size: 16px;
+}
+input::placeholder{
+    font-size: 16px;
+    color: #BBBBE2;
+}
+placeholder:hover {
+    background: #00c83c;}
+.input-icon {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    left: 20px;
+    top: 50px;
+    transform: translateY(-55%);
+}
+.btn-inicio {
+   
+    background-color: rgba(89, 10, 179, 0.7);
+        border: none;
+        color: #FFFFFF;
+        text-decoration: none;
+        font-size: 25px;
+        cursor: pointer;
+        border-radius: 1.4rem;
+        text-align: center;
+        padding: 12px 32px;
+}
+
+.btn-inicio:hover {
+    background: rgb(16, 195, 67);
+}
+
+.success {
+    position: absolute;
+    top: 50px;
+    color: #00c83c;
+    font-size: 18px;
+}
+
+.error {
+    position: absolute;
+    top: 50px;
+    color: #e02d00;
+    font-size: 18px;
+}
+.header .navigation ul li {
+    float: left;
+    position: relative;
+}
+.header .navigation ul li a {
+    font-size: 18px;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 20px;
+    display: block;
+    transition: all .2s ease;
+}
+.header .navigation ul li a.hover {
+    background-color: #685cfe;
+}
+.header .navigation ul li ul {
+    position: absolute;
+    right: 0;
+    width: 300px;
+    background-color: rgba(1, 1, 1, 0.7);
+    display: none;
+}
+.header .navigation ul li ul li a {
+    font-size: 15px;
+    text-transform: capitalize;
+}
+.header .navigation ul li ul li ul {
+    position: absolute;
+    top: 0;
+    right: 300px;
+
+}
+.header .navigation ul li ul li {
+    width: 100%;
+}
+.header .navigation ul li:hover > ul {
+    display: initial;
+}
+#toggle,
+.header label {
+    display: none;
+    cursor: pointer;
+
+}
+.administrador {
+    width: 45px;
+    height: 35px;
+
+}
+
+.btn-inicio:hover {
+    background: rgb(153, 47, 252);
+}
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(7, 16, 190, 0.7);
+    padding: 0 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 25px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: 700;
+
+}
+
+.navigation ul {
+    list-style: none;
+}
+@media(max-width:991px) {
+    body {
+        padding: 10px;
+    }
+    form {
+        padding: 20px;
+        width: 100%;
+
+    }
+    .input-wrapper {
+        position: relative;
+        width: 88%;
+        margin-bottom: 35px;
+        }
+.input {
+    padding: 20px 0px 20px 45px;
+
+}
+.input-icon {
+    height: 20px;
+    width: 20px;
+}
+.mensaje-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.mensaje-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.cerrar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+}

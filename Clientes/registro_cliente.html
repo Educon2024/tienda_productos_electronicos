@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Cliente</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <form id="registroForm" method="post" action="http://localhost:4000/api/clientes">
+        <h2>Tienda Online</h2>
+        <img src="../imagenes/Logo.jpg">
+        <p>¡Registrate ya!</p>       
+        <div class="input-wrapper">
+            <input type="text" name="nombre" placeholder="Nombre">
+            <img class="input-icon" src="../imagenes/name.svg" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="email" name="correo" placeholder="Email">
+            <img class="input-icon" src="../imagenes/email.svg" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="text" name="dirreccion" placeholder="Dirección">
+            <img class="input-icon" src="../imagenes/direction.svg" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="tel" name="telefono" placeholder="Telefono">
+            <img class="input-icon" src="../imagenes/phone.svg" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="password" name="contraseña" placeholder="Contraseña">
+            <img class="input-icon" src="../imagenes/password.svg" alt="">
+        </div>
+        <button type="submit" class="btn-inicio">Enviar</button>
+    </form>
+    <div id="respuesta" class="mensaje-overlay">
+        <div class="mensaje-panel">
+            <span class="cerrar" onclick="cerrarMensaje()">&times;</span>
+            <p>Usuario registrado</p>
+        </div>
+    </div>
+    <div id="respuesta"></div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el comportamiento predeterminado de enviar el formulario
+            
+            // Obtener el formulario
+            var form = event.target;
+            
+            // Obtener la URL a la que se enviará el formulario
+            var url = form.action;
+            
+            // Obtener los datos del formulario
+            var formData = new FormData(form);
+            
+            // Realizar la solicitud POST utilizando fetch()
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json()) // Convertir la respuesta a JSON
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+                mostrarMensaje();
+                limpiarFormulario();
+                setTimeout(function() {
+                    cerrarMensaje();
+                // Después de 2 segundos, redirigir a la pantalla de inicio de sesión
+                window.location.href = '../index.html';
+            }, 2000); // Tiempo en mi
+            })
+            .catch(error => {
+                console.error('Error al realizar la solicitud:', error); // Manejar errores de la solicitud
+                // Aquí puedes agregar código para manejar errores
+            });
+        });
+    function mostrarMensaje() {
+        document.getElementById('respuesta').style.display = 'block';
+    }
+
+    function cerrarMensaje() {
+        document.getElementById('respuesta').style.display = 'none';
+    }
+
+    function limpiarFormulario() {
+        document.getElementById('registroForm').reset();
+    }
+    </script>
+</body>
+</html>
