@@ -15,7 +15,12 @@ module.exports=function (dbintyectada) {
         const usuario={
             id:body.id,
             nombre:body.nombre,
-            activo:body.activo
+            correo:body.correo,
+            dirreccion:body.dirreccion,	
+            telefono:body.telefono,	
+            contraseña:body.contraseña,	
+            rol:body.rol
+
         }
         const respuesta=await db.agregar(TABLA,usuario);
         var insertId=0;
@@ -28,8 +33,12 @@ module.exports=function (dbintyectada) {
         if (body.usuario||body.password) {
             respuesta2 = await auth.agregar({
                 id:insertId,
-                usuario:body.usuario,
-                password:body.password
+                nombre:body.nombre,
+                correo:body.correo,
+                dirreccion:body.dirreccion,	
+                telefono:body.telefono,	
+                contraseña:body.contraseña,	
+                rol:body.rol
             })
         }
 

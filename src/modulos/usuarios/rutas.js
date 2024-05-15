@@ -5,7 +5,7 @@ const seguridad=require('./seguridad')
 const router=express.Router();
 router.get('/',todos)
 router.get('/:id',uno)
-router.post('/',seguridad(),agregar)
+router.post('/',agregar)
 router.put('/',seguridad(),eliminar)
 
 async function todos(req,res,next){
