@@ -17,10 +17,10 @@
         <label for="toggle"> <img class="cliente" src="../imagenes/menu.svg" alt="cliente"></label>
         <nav class="navigation">
             <ul>
-                <li><a href="/Llaneros Solitarios/Clientes/cliente.html">Inicio</a></li>
-                <li><a href="/Llaneros Solitarios/Clientes/productos.html">Productos</a></li>
-                <li><a href="/Llaneros Solitarios/Clientes/carrito.html">Comprar</a></li>
-                <li><a href="/index.html">Salir</a></li>
+                <li><a href="/Clientes/cliente.html">Inicio</a></li>
+                <li><a href="/Clientes/productos.html">Productos</a></li>
+                <li><a href="/Clientes/carrito.html">Comprar</a></li>
+                <li><a href="../index.html">Salir</a></li>
 
             </ul>
         </nav>
@@ -31,21 +31,66 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>	Descripcion	</th>
-                    <th>Cantidad</th>
-                    <th>	Precio</th>
-                    <th>	Imagen</th>
-                    <th>	Categoria</th>
-                    <th>	Editar	</th>
-                    <th>Eliminar</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Imagen</th>
+                    <th>Categoria</th>
+                    <th>Agregar</th>
                     
                 </tr>
             </thead>
-
-
+            <tbody id="productos-lista">
+                <!-- Los productos se cargarán aquí -->
+            </tbody>
         </table>
-
-
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('http://localhost:4000/api/producto');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Verificar la estructura de la respuesta
+                console.log('Datos recibidos del servidor:', data);
+
+                if (data.error || !Array.isArray(data.body)) {
+                    throw new Error('La respuesta no es válida o no es un array.');
+                }
+
+                productos = data.body;
+                const lista = document.getElementById('productos-lista');
+                productos.forEach((producto, index) => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${producto.nombre}</td>
+                        <td>${producto.descripcion}</td>
+                        <td>${producto.preciopublico}</td>
+                        <td><img src="${producto.imagen}" alt="${producto.nombre}" width="100"></td>
+                        <td>${producto.categoria}</td>
+                        <td><button onclick="agregarAlCarrito(${index})">Agregar</button></td>
+                    `;
+                    lista.appendChild(fila);
+                });
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+            }
+        });
+
+        function agregarAlCarrito(index) {
+            const producto = productos[index];
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.push(producto);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            alert('Producto agregado al carrito');
+        }
+
+        function eliminarProducto(id) {
+            // Lógica para eliminar producto
+            console.log('Eliminar producto', id);
+        }
+    </script>
 </body>
 </html>

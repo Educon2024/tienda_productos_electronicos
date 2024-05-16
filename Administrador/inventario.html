@@ -8,43 +8,87 @@
     
 </head>
 <body>
-    <img src="../imagenes/Logo2.jpg">
+    <img src="../imagenes/Logo2.jpg" alt="Logo">
     <header class="header">
-        
-        <div class="logo">administrador</div>
+        <div class="logo">Administrador</div>
         <input type="checkbox" id="toggle">
-        <label for="toggle"> <img class="administrador" src="../imagenes/menu.svg" alt="administrador"></label>
+        <label for="toggle"><img class="administrador" src="../imagenes/menu.svg" alt="administrador"></label>
         <nav class="navigation">
             <ul>
-                <li><a href="../Administrador/crear_Productos.html">Crear Productos</a></li>
-                <li><a href="inventario.html">Inventario</a></li>
-                <li><a href="../Administrador/Ventas.html">Ventas</a></li>
-                <li><a href="/Llaneros Solitarios/">Salir</a></li>
-
+                <li><a href="/Administrador/crear_Productos.html">Crear Productos</a></li>
+                <li><a href="/Administrador/inventario.html">Inventario</a></li>
+                <li><a href="/Administrador/Ventas.html">Ventas</a></li>
+                <li><a href="../index.html">Salir</a></li>
             </ul>
         </nav>
     </header>
-    <h2 style="color: rgb(4, 82, 82);"> <b>Lista de Productos </b></style></h2><br>
+    <h2 style="color: rgb(4, 82, 82);"><b>Lista de Productos</b></h2><br>
     <div class="container">
         <table>
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>	Descripcion	</th>
+                    <th>Descripción</th>
                     <th>Cantidad</th>
-                    <th>	Precio</th>
-                    <th>	Imagen</th>
-                    <th>	Categoria</th>
-                    <th>	Editar	</th>
+                    <th>Precio</th>
+                    <th>Imagen</th>
+                    <th>Categoría</th>
+                    <th>Editar</th>
                     <th>Eliminar</th>
-                    
                 </tr>
             </thead>
-
-
+            <tbody id="productos-lista">
+                <!-- Los productos se cargarán aquí -->
+            </tbody>
         </table>
-
-
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('http://localhost:4000/api/producto');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Verificar la estructura de la respuesta
+                console.log('Datos recibidos del servidor:', data);
+
+                if (data.error || !Array.isArray(data.body)) {
+                    throw new Error('La respuesta no es válida o no es un array.');
+                }
+
+                const productos = data.body;
+                const lista = document.getElementById('productos-lista');
+                productos.forEach(producto => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${producto.nombre}</td>
+                        <td>${producto.descripcion}</td>
+                        <td>${producto.cantidad}</td>
+                        <td>${producto.preciopublico}</td>
+                        <td><img src="${producto.imagen}" alt="${producto.nombre}" width="100"></td>
+                        <td>${producto.categoria}</td>
+                        <td><button onclick="editarProducto(${producto.id})">Editar</button></td>
+                        <td><button onclick="eliminarProducto(${producto.id})">Eliminar</button></td>
+                    `;
+                    lista.appendChild(fila);
+                });
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+            }
+        });
+
+        function editarProducto(id) {
+            // Lógica para editar producto
+            console.log('Editar producto', id);
+        }
+
+        function eliminarProducto(id) {
+            // Lógica para eliminar producto
+            console.log('Eliminar producto', id);
+        }
+    </script>
 </body>
 </html>

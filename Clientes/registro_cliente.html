@@ -33,12 +33,6 @@
         </div>
         <button type="submit" class="btn-inicio">Enviar</button>
     </form>
-    <div id="respuesta" class="mensaje-overlay">
-        <div class="mensaje-panel">
-            <span class="cerrar" onclick="cerrarMensaje()">&times;</span>
-            <p>Usuario registrado</p>
-        </div>
-    </div>
     <script>
     document.getElementById('registroForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Evitar el comportamiento predeterminado de enviar el formulario
@@ -58,7 +52,7 @@
             dirreccion: direccion, // Nota: 'dirreccion' contiene un error de ortografía, debería ser 'direccion'
             telefono: telefono,
             contraseña: contraseña,
-            rol: 1
+            rol: 0
         };
     
         // Realizar la solicitud POST utilizando fetch()

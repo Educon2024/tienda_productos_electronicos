@@ -2,27 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <form method="post">
-    <h2>Tienda Online</h2>
-    <img src="imagenes/Logo.jpg">
-    <p style="color: rgb(6, 88, 61);"><b>Inicio de Sesión</b></p>
-    <div class="input-wrapper">
-        <input type="text" name="usuario" placeholder="Usuario">
-        <img class="input-icon" src="imagenes/name.svg" alt="">
-    </div>
-    <div class="input-wrapper">
-        <input type="password" name="password" placeholder="Contraseña">
-        <img class="input-icon" src="imagenes/password.svg" alt="">
-    </div>
-    <a href="#" class="btn-inicio" >Iniciar Sesión</a><br><br><br><br>
-    <a href="/Clientes/registro_cliente.html" class="btn-inicio" >Registrate</a>
+    <form id="loginForm" method="post" action="#">
+        <h2>Tienda Online</h2>
+        <img src="imagenes/Logo.jpg" alt="Logo de la Tienda">
+        <p style="color: rgb(6, 88, 61);"><b>Inicio de Sesión</b></p>
+        <div class="input-wrapper">
+            <input type="text" name="usuario" placeholder="Usuario">
+            <img class="input-icon" src="imagenes/name.svg" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="password" name="password" placeholder="Contraseña">
+            <img class="input-icon" src="imagenes/password.svg" alt="">
+        </div>
+        <button type="submit" class="btn-inicio">Iniciar Sesión</button><br><br><br><br>
+        <a href="/Clientes/registro_cliente.html" class="btn-inicio">Registrate</a>
     </form>
-   
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el comportamiento predeterminado de enviar el formulario
+            
+            // Obtener los valores de los campos del formulario
+            var usuario = document.querySelector('input[name="usuario"]').value;
+            var password = document.querySelector('input[name="password"]').value;
+        
+            // Crear el objeto JSON con los datos del formulario
+            var datosUsuario = {
+                usuario: usuario,
+                password: password,
+            };
+        
+            // Realizar la solicitud POST utilizando fetch()
+            fetch('http://localhost:4000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosUsuario)
+            })
+            .then(response => response.json()) // Convertir la respuesta a JSON
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+                
+                // Decodificar el JWT
+                const { error, status, body } = data;
+
+                console.log('Error:', error);
+                console.log('Status:', status);
+                console.log('Body:', body);
+                
+                // Decodificar el JWT si no hay error
+                if (!error && body) {
+                    var decoded = jwt_decode(body);
+                    const { Id, usuario, password, rol, iat } = decoded;
+
+                    console.log('Id:', Id);
+                    console.log('Usuario:', usuario);
+                    console.log('Password:', password);
+                    console.log('Rol:', rol);
+                    console.log('IAT:', iat);
+                    let usuarioDta = {
+                        id:Id,
+                        usuario:usuario
+                    };
+                    localStorage.setItem('usuario', JSON.stringify(usuarioDta));
+                   
+                    if (rol==0) {
+                        console.log('Rol:', rol);
+                        window.location.href = '/Clientes/cliente.html';
+                    } else {
+                        window.location.href = '/Administrador/administrador.html';
+                    }
+                } else {
+                    console.error('Error en la respuesta o no se recibió un token.');
+                }
+                limpiarFormulario();
+                // Redireccionar a otra página si es necesario
+                // window.location.href = '../index.html';
+            })
+            .catch(error => {
+                console.error('Error al realizar la solicitud:', error); // Manejar errores de la solicitud
+                // Aquí puedes agregar código para manejar errores
+            });
+        });
+        
+        function limpiarFormulario() {
+            document.getElementById('loginForm').reset();
+        }
+    </script>
    
 </body>
 </html>

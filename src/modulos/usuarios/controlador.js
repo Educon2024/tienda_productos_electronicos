@@ -18,10 +18,9 @@ module.exports=function (dbintyectada) {
             correo:body.correo,
             dirreccion:body.dirreccion,	
             telefono:body.telefono,	
-            contraseña:body.contraseña,	
             rol:body.rol
-
         }
+
         const respuesta=await db.agregar(TABLA,usuario);
         var insertId=0;
         if (body.id==0) {
@@ -30,14 +29,11 @@ module.exports=function (dbintyectada) {
             insertId=body.id;
         }
         var respuesta2='';
-        if (body.usuario||body.password) {
+        if (body.nombre||body.contraseña) {
             respuesta2 = await auth.agregar({
                 id:insertId,
-                nombre:body.nombre,
-                correo:body.correo,
-                dirreccion:body.dirreccion,	
-                telefono:body.telefono,	
-                contraseña:body.contraseña,	
+                usuario:body.correo,
+                password:body.contraseña,	
                 rol:body.rol
             })
         }

@@ -28,6 +28,9 @@ async function login(usuario,password){
         if (data.password) {
             authData.password=await bcrypt.hash(data.password.toString(),5)
         }
+        if (data.rol) {
+            authData.rol=data.rol
+        }
         return db.agregar(TABLA,authData);
     }
 

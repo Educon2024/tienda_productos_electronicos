@@ -8,37 +8,67 @@
     <img  class="presentacion" src="../imagenes/Logo.jpg" alt="presentacion">
 </head>
 <body>
-    
     <header class="header">
-        
-        <div class="logo">administrador</div>
+        <div class="logo">Administrador</div>
         <input type="checkbox" id="toggle">
-        <label for="toggle"> <img class="administrador" src="../imagenes/menu.svg" alt="administrador"></label>
+        <label for="toggle"><img class="administrador" src="../imagenes/menu.svg" alt="administrador"></label>
         <nav class="navigation">
             <ul>
-                <li><a href="../Administrador/crear_Productos.html">Crear Productos</a></li>
-                <li><a href="../Administrador/inventario.html">Inventario</a></li>
-                <li><a href="Ventas.html">Ventas</a></li>
-                <li><a href="/Llaneros Solitarios/index.html">Salir</a></li>
-
+                <li><a href="/Administrador/crear_Productos.html">Crear Productos</a></li>
+                <li><a href="/Administrador/inventario.html">Inventario</a></li>
+                <li><a href="/Administrador/Ventas.html">Ventas</a></li>
+                <li><a href="../index.html">Salir</a></li>
             </ul>
         </nav>
     </header>
-    <h2 style="color: rgb(4, 82, 82);"> <b>Ventas </b></style></h2><br>
+    <h2 style="color: rgb(4, 82, 82);"><b>Ventas</b></h2><br>
     <div class="container">
         <table>
             <thead>
                 <tr>
                     <th>Folio</th>
-                    <th>Fecha	</th>
+                    <th>Fecha</th>
                     <th>Cliente</th>
                     <th>Total Compra</th>
-                   
                 </tr>
             </thead>
-
-
+            <tbody id="ventas-lista">
+                <!-- Las ventas se cargarán aquí -->
+            </tbody>
         </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('http://localhost:4000/api/ventas');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
 
+                // Verificar la estructura de la respuesta
+                console.log('Datos recibidos del servidor:', data);
+
+                if (data.error || !Array.isArray(data.body)) {
+                    throw new Error('La respuesta no es válida o no es un array.');
+                }
+
+                const ventas = data.body;
+                const lista = document.getElementById('ventas-lista');
+                ventas.forEach(venta => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${venta.id}</td>
+                        <td>${new Date(venta.fecha).toLocaleDateString()}</td>
+                        <td>${venta.cliente}</td>
+                        <td>${venta.total}</td>
+                    `;
+                    lista.appendChild(fila);
+                });
+            } catch (error) {
+                console.error('Error al cargar ventas:', error);
+            }
+        });
+    </script>
 </body>
 </html>

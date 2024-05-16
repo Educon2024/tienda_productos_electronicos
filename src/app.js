@@ -3,7 +3,8 @@ const cors = require('cors');
 const morgan=require('morgan');
 const config =require('./config');
 
-const clientes=require('./modulos/clientes/rutas');
+const producto=require('./modulos/Productos/rutas');
+const ventas=require('./modulos/Ventas/rutas');
 const usuarios=require('./modulos/usuarios/rutas');
 const error = require('./red/errors');
 const auth = require('./modulos/auth/rutas');
@@ -16,7 +17,8 @@ app.use(express.urlencoded({extended:true}));
 app.set('port',config.app.port);
 
 
-app.use('/api/clientes',clientes);
+app.use('/api/producto',producto);
+app.use('/api/ventas',ventas);
 app.use('/api/usuarios',usuarios);
 app.use('/api/auth',auth);
 app.use(error)

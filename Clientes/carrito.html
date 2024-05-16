@@ -5,80 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comprar</title>
     <link rel="stylesheet" href="../styles/style2.css">
-    <i class="fa-solid fa-cart-shopping"></i>
 </head>
 <body>
     <br><br><br>
     <img src="../imagenes/Logo2.jpg">
     <header class="header">
-        
         <div class="logo">Cliente</div>
         <input type="checkbox" id="toggle">
         <label for="toggle"> <img class="carrito" src="../imagenes/menu.svg" alt="carrito"></label>
-        <NAV>
-            <i class="fa-solid fa-cart-shopping"></i>
-        </NAV>
         <nav class="navigation">
             <ul>
-                <li><a href="/Llaneros Solitarios/Clientes/cliente.html">Inicio</a></li>
-                <li><a href="/Llaneros Solitarios/Clientes/productos.html">Productos</a></li>
-                <li><a href="/Llaneros Solitarios/Clientes/carrito.html">Comprar</a></li>
-                <li><a href="/Llaneros Solitarios/index.html">Salir</a></li>
-                
+                <li><a href="/Clientes/cliente.html">Inicio</a></li>
+                <li><a href="/Clientes/productos.html">Productos</a></li>
+                <li><a href="/Clientes/carrito.html">Comprar</a></li>
+                <li><a href="/index.html">Salir</a></li>
             </ul>
         </nav>
     </header>
-    <h2 style="color: rgb(4, 82, 82);"> <b>Venta de Productos </b></style></h2><br>
+    <h2 style="color: rgb(4, 82, 82);"><b>Venta de Productos</b></h2><br>
     
     <div class="container">
-        <form method="post">
-         
-            <div class="input-wrapper">
-                <input type="text" name="name" placeholder="Producto">
-                <img class="input-icon" src="../imagenes/producto.png" alt="">
-            </div>
-            <div class="input-wrapper">
-                <input type="text" name="text" placeholder="Descripcion">
-                <img class="input-icon" src="../imagenes/descripcion.png" alt="">
-            </div>
-            <div class="input-wrapper">
-                <input type="number" name="numero" placeholder="Cantidad">
-                <img class="input-icon" src="../imagenes/cantidad.png" alt="">
-            </div>
-            <div class="input-wrapper">
-                <input type="number" name="numero" placeholder="Precio">
-                <img class="input-icon" src="../imagenes/precio.png" alt="">
-            </div>
-            <div class="input-wrapper">
-                <input type="date" name="date" placeholder="fecha">
-                <img class="input-icon" src="../imagenes/imagen.png" alt="">
-            </div>
-            <div class="input-wrapper">
-                <input type="text" name="text" placeholder="Eliminar">
-                <img class="input-icon" src="../imagenes/categoria.png" alt="">
-            </div>
-           
-            
-            <a href="#" class="btn-inicio" >Comprar</a><br><br><br><br>
-            </form>
         <table>
             <thead>
                 <tr>
-                    <th>Producto</th>
-                    <th>Imagen</th>
+                    <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Cantidad</th>
                     <th>Precio</th>
+                    <th>Imagen</th>
+                    <th>Categoría</th>
                     <th>Eliminar</th>
-                   
-                    
                 </tr>
             </thead>
-
-
+            <tbody id="carrito-lista">
+                <!-- Los productos del carrito se cargarán aquí -->
+            </tbody>
         </table>
-
-
+        <div>
+            <h3>Total: <span id="total-precio">0</span></h3>
+            <button onclick="comprarProductos()">Comprar</button>
+        </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarCarrito();
+        });
+
+        function cargarCarrito() {
+            const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const lista = document.getElementById('carrito-lista');
+            let totalPrecio = 0;
+            
+            lista.innerHTML = ''; // Limpiar lista actual
+            
+            carrito.forEach((producto, index) => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${producto.nombre}</td>
+                    <td>${producto.descripcion}</td>
+                    <td><input type="number" value="${producto.cantidad}" min="1" onchange="actualizarCantidad(${index}, this.value)"></td>
+                    <td>${producto.preciopublico}</td>
+                    <td><img src="${producto.imagen}" alt="${producto.nombre}" width="100"></td>
+                    <td>${producto.categoria}</td>
+                    <td><button onclick="eliminarDelCarrito(${index})">Eliminar</button></td>
+                `;
+                lista.appendChild(fila);
+                totalPrecio += producto.preciopublico * producto.cantidad;
+            });
+
+            document.getElementById('total-precio').innerText = totalPrecio.toFixed(2);
+        }
+
+        function actualizarCantidad(index, nuevaCantidad) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            if (nuevaCantidad < 1) {
+                nuevaCantidad = 1;
+            }
+            carrito[index].cantidad = parseInt(nuevaCantidad, 10);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            cargarCarrito();
+        }
+
+        function eliminarDelCarrito(index) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.splice(index, 1);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            cargarCarrito();
+        }
+
+        function comprarProductos() {
+            const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const totalPrecio = parseFloat(document.getElementById('total-precio').innerText);
+
+            // Datos del usuario (deberían ser obtenidos de alguna forma, por ejemplo, desde localStorage o una cookie)
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+                    console.log('Id:', usuario.id);
+                    console.log('usuario1.usuario', usuario.usuario);
+            const compraData = {
+                id: usuario.id,
+                usuario: usuario.usuario,
+                productos: JSON.stringify(carrito),
+                total: totalPrecio.toFixed(2),
+                fecha: new Date().toISOString()
+            };
+
+            fetch('http://localhost:4000/api/ventas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(compraData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Compra realizada:', data);
+                // Limpiar carrito
+                localStorage.removeItem('carrito');
+                alert('Compra realizada con éxito.');
+                window.location.href = '/Clientes/cliente.html';
+            })
+            .catch(error => {
+                console.error('Error en la compra:', error);
+            });
+        }
+    </script>
 </body>
 </html>
