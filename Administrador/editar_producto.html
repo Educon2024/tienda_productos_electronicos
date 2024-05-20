@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Productos</title>
+    <link rel="stylesheet" href="../styles/style.css"><br><br><br><br>
+  
+</head>
+<body>
+    <form id="registroProdForm" method="post" action="http://localhost:4000/api/producto">
+        
+        <img src="../imagenes/Logo.jpg">
+        
+    <header class="header">
+        
+        <div class="logo">administrador</div>
+        <input type="checkbox" id="toggle">
+        <label for="toggle"> <img class="administrador" src="../imagenes/menu.svg" alt="administrador"></label>
+        <nav class="navigation">
+            <ul>
+                <li><a href="crear_Productos.html">Crear Productos</a></li>
+                <li><a href="/Administrador/inventario.html">Inventario</a></li>
+                <li><a href="/Administrador/Ventas.html">Ventas</a></li>
+                <li><a href="../index.html">Salir</a></li>
+
+            </ul>
+        </nav>
+    </header>
+    <h2 style="color: rgb(4, 82, 82);"> <b>Formulario Registro de Productos</b></style></h2><br>
+    <form method="post">
+         
+        <div class="input-wrapper">
+            <input type="text" name="nombre" placeholder="Nombre del Producto">
+            <img class="input-icon" src="../imagenes/producto.png" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="text" name="descripcion" placeholder="Descripcion">
+            <img class="input-icon" src="../imagenes/descripcion.png" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="number" name="cantidad" placeholder="Cantidad">
+            <img class="input-icon" src="../imagenes/cantidad.png" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="number" name="precio_compra" placeholder="Precio compra">
+            <img class="input-icon" src="../imagenes/precio.png" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="number" name="precio_publico" placeholder="Precio venta">
+            <img class="input-icon" src="../imagenes/precio.png" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="img" name="imagen" placeholder="Imagen">
+            <img class="input-icon" src="../imagenes/imagen.png" alt="">
+        </div>
+        <div class="input-wrapper">
+            <input type="text" name="categoria" placeholder="Categoria">
+            <img class="input-icon" src="../imagenes/categoria.png" alt="">
+        </div>
+       
+        
+        <button type="submit" class="btn-inicio">Enviar</button>
+        </form>
+        <script>
+            document.getElementById('registroProdForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Evitar el comportamiento predeterminado de enviar el formulario
+                
+                // Obtener los valores de los campos del formulario
+                var nombre = document.querySelector('input[name="nombre"]').value;
+                var descripcion = document.querySelector('input[name="descripcion"]').value;
+                var cantidad = document.querySelector('input[name="cantidad"]').value;
+                var precio_compra = document.querySelector('input[name="precio_compra"]').value;
+                var precio_publico = document.querySelector('input[name="precio_publico"]').value;
+                var imagen = document.querySelector('input[name="imagen"]').value;
+                var categoria = document.querySelector('input[name="categoria"]').value;
+                // Crear el objeto JSON con los datos del formulario
+                var datosUsuario = {
+                    nombre: nombre,
+                    descripcion: descripcion,
+                    cantidad: cantidad,
+                    preciocompra: precio_compra, // Nota: 'dirreccion' contiene un error de ortografía, debería ser 'direccion'
+                    preciopublico: precio_publico,
+                    imagen: imagen,
+                    categoria: categoria
+                };
+            
+                // Realizar la solicitud POST utilizando fetch()
+                fetch('http://localhost:4000/api/producto', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datosUsuario)
+                })
+                .then(response => response.json()) // Convertir la respuesta a JSON
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                    //mostrarMensaje();
+                    limpiarFormulario();
+                    //window.location.href = '../index.html'; // Redireccionar a otra página si es necesario
+                })
+                .catch(error => {
+                    console.error('Error al realizar la solicitud:', error); // Manejar errores de la solicitud
+                    // Aquí puedes agregar código para manejar errores
+                });
+            });
+            
+            function mostrarMensaje() {
+                document.getElementById('respuesta').style.display = 'block';
+            }
+            
+            function cerrarMensaje() {
+                document.getElementById('respuesta').style.display = 'none';
+            }
+            
+            function limpiarFormulario() {
+                document.getElementById('registroProdForm').reset();
+            }
+           
+            </script>
+</body>
+</html>

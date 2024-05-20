@@ -45,6 +45,66 @@
         </table>
     </div>
     <script>
+            document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                let response = await fetch('http://localhost:4000/api/producto');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                let data = await response.json();
+
+                // Verificar la estructura de la respuesta
+                console.log('Datos recibidos del servidor:', data);
+
+                if (data.error || !Array.isArray(data.body)) {
+                    throw new Error('La respuesta no es válida o no es un array.');
+                }
+
+                let productos = data.body;
+
+                if (productos.length === 0) {
+                    // Crear dos nuevos productos si la lista está vacía
+                    const nuevosProductos = [
+                        {
+                            nombre: "Monitor acer",
+                            descripcion: "monitor acer 2k",
+                            cantidad:150,
+                            preciocompra:8,
+                            preciopublico: 10,
+                            imagen: "https://http2.mlstatic.com/D_NQ_NP_739477-MCO54856947590_042023-O.webp",
+                            categoria: "monitores"
+                        },
+                        {
+                            nombre: "Tarjeta grafica RTX 6090",
+                            descripcion: "TARJETA GRAFICA",
+                            cantidad:15,
+                            preciocompra:80,
+                            preciopublico: 100,
+                            imagen: "https://i.blogs.es/e2a97f/radeonrx6900ap/1366_2000.jpg",
+                            categoria: "GPU"
+                        }
+                    ];
+
+                    // Enviar nuevos productos al servidor
+                    for (const producto of nuevosProductos) {
+                        await fetch('http://localhost:4000/api/producto', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(producto)
+                        });
+                    }
+
+                    // Recargar la página para reflejar los cambios
+                    window.location.reload();
+                } else {
+                    cargarProductos(productos);
+                }
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+            }
+        });
         document.addEventListener('DOMContentLoaded', async function() {
             try {
                 const response = await fetch('http://localhost:4000/api/producto');
@@ -82,7 +142,19 @@
         function agregarAlCarrito(index) {
             const producto = productos[index];
             let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-            carrito.push(producto);
+            
+            // Verificar si el producto ya está en el carrito
+            const productoEnCarrito = carrito.find(item => item.nombre === producto.nombre);
+
+            if (productoEnCarrito) {
+                // Incrementar la cantidad del producto existente
+                productoEnCarrito.cantidad += 1;
+            } else {
+                // Agregar un nuevo producto con cantidad 1
+                producto.cantidad = 1;
+                carrito.push(producto);
+            }
+
             localStorage.setItem('carrito', JSON.stringify(carrito));
             alert('Producto agregado al carrito');
         }

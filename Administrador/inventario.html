@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario</title>
-    <link rel="stylesheet" href="../styles/style2.css"><br><br><br><br>
-    
+    <link rel="stylesheet" href="../styles/style2.css">
 </head>
 <body>
     <img src="../imagenes/Logo2.jpg" alt="Logo">
@@ -44,6 +43,66 @@
     </div>
 
     <script>
+         document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                let response = await fetch('http://localhost:4000/api/producto');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                let data = await response.json();
+
+                // Verificar la estructura de la respuesta
+                console.log('Datos recibidos del servidor:', data);
+
+                if (data.error || !Array.isArray(data.body)) {
+                    throw new Error('La respuesta no es válida o no es un array.');
+                }
+
+                let productos = data.body;
+
+                if (productos.length === 0) {
+                    // Crear dos nuevos productos si la lista está vacía
+                    const nuevosProductos = [
+                        {
+                            nombre: "Monitor acer",
+                            descripcion: "monitor acer 2k",
+                            cantidad:150,
+                            preciocompra:8,
+                            preciopublico: 10,
+                            imagen: "https://http2.mlstatic.com/D_NQ_NP_739477-MCO54856947590_042023-O.webp",
+                            categoria: "monitores"
+                        },
+                        {
+                            nombre: "Tarjeta grafica RTX 6090",
+                            descripcion: "TARJETA GRAFICA",
+                            cantidad:15,
+                            preciocompra:80,
+                            preciopublico: 100,
+                            imagen: "https://i.blogs.es/e2a97f/radeonrx6900ap/1366_2000.jpg",
+                            categoria: "GPU"
+                        }
+                    ];
+
+                    // Enviar nuevos productos al servidor
+                    for (const producto of nuevosProductos) {
+                        await fetch('http://localhost:4000/api/producto', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(producto)
+                        });
+                    }
+
+                    // Recargar la página para reflejar los cambios
+                    window.location.reload();
+                } else {
+                    cargarProductos(productos);
+                }
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+            }
+        });
         document.addEventListener('DOMContentLoaded', async function() {
             try {
                 const response = await fetch('http://localhost:4000/api/producto');
@@ -70,7 +129,7 @@
                         <td>${producto.preciopublico}</td>
                         <td><img src="${producto.imagen}" alt="${producto.nombre}" width="100"></td>
                         <td>${producto.categoria}</td>
-                        <td><button onclick="editarProducto(${producto.id})">Editar</button></td>
+                        <td><button onclick="editarProducto(this,${producto.id})">Editar</button></td>
                         <td><button onclick="eliminarProducto(${producto.id})">Eliminar</button></td>
                     `;
                     lista.appendChild(fila);
@@ -80,14 +139,95 @@
             }
         });
 
-        function editarProducto(id) {
-            // Lógica para editar producto
-            console.log('Editar producto', id);
+        async function eliminarProducto(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+                try {
+                    const response = await fetch(`http://localhost:4000/api/producto`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id })  // Enviando el ID del producto en el cuerpo de la solicitud
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    // Remover el producto de la tabla
+                    document.querySelector(`button[onclick="eliminarProducto(${id})"]`).closest('tr').remove();
+                    alert('Producto eliminado con éxito');
+                } catch (error) {
+                    console.error('Error al eliminar producto:', error);
+                    alert('Hubo un problema al eliminar el producto');
+                }
+            }
         }
 
-        function eliminarProducto(id) {
-            // Lógica para eliminar producto
-            console.log('Eliminar producto', id);
+        function editarProducto(button, id) {
+            const fila = button.closest('tr');
+            const celdas = fila.querySelectorAll('td');
+            const nombre = celdas[0].innerText;
+            const descripcion = celdas[1].innerText;
+            const cantidad = celdas[2].innerText;
+            const precio = celdas[3].innerText;
+            const imagen = celdas[4].querySelector('img').src;
+            const categoria = celdas[5].innerText;
+
+            celdas[0].innerHTML = `<input type="text" value="${nombre}">`;
+            celdas[1].innerHTML = `<input type="text" value="${descripcion}">`;
+            celdas[2].innerHTML = `<input type="number" value="${cantidad}">`;
+            celdas[3].innerHTML = `<input type="number" value="${precio}">`;
+            celdas[5].innerHTML = `<input type="text" value="${categoria}">`;
+            button.innerText = 'Actualizar';
+            button.onclick = function() {
+                actualizarProducto(button, id);
+            };
+        }
+
+        async function actualizarProducto(button, id) {
+            const fila = button.closest('tr');
+            const celdas = fila.querySelectorAll('td');
+
+            const nombre = celdas[0].querySelector('input').value;
+            const descripcion = celdas[1].querySelector('input').value;
+            const cantidad = celdas[2].querySelector('input').value;
+            const precio = celdas[3].querySelector('input').value;
+            const categoria = celdas[5].querySelector('input').value;
+
+            const productoActualizado = {
+                id,
+                nombre,
+                descripcion,
+                cantidad,
+                preciopublico: precio,
+                categoria
+            };
+
+            try {
+                const response = await fetch(`http://localhost:4000/api/producto`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(productoActualizado)
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                alert('Producto actualizado con éxito');
+                // Actualizar la fila con los nuevos valores
+                celdas[0].innerText = nombre;
+                celdas[1].innerText = descripcion;
+                celdas[2].innerText = cantidad;
+                celdas[3].innerText = precio;
+                celdas[5].innerText = categoria;
+                button.innerText = 'Editar';
+                button.onclick = function() {
+                    editarProducto(button, id);
+                };
+            } catch (error) {
+                console.error('Error al actualizar producto:', error);
+                alert('Hubo un problema al actualizar el producto');
+            }
         }
     </script>
 </body>

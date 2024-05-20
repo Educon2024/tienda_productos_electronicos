@@ -31,6 +31,8 @@
             <input type="password" name="contraseña" placeholder="Contraseña">
             <img class="input-icon" src="../imagenes/password.svg" alt="">
         </div>
+        <input type="checkbox" id="esAdmin" name="esAdmin">
+        <label for="esAdmin">Es cuenta administrador</label>
         <button type="submit" class="btn-inicio">Enviar</button>
     </form>
     <script>
@@ -43,7 +45,9 @@
         var direccion = document.querySelector('input[name="dirreccion"]').value;
         var telefono = document.querySelector('input[name="telefono"]').value;
         var contraseña = document.querySelector('input[name="contraseña"]').value;
-    
+        var esAdmin = document.querySelector('input[name="esAdmin"]').checked;
+
+        var rol = esAdmin ? 1 : 0;
         // Crear el objeto JSON con los datos del formulario
         var datosUsuario = {
             id: 0,
@@ -52,7 +56,7 @@
             dirreccion: direccion, // Nota: 'dirreccion' contiene un error de ortografía, debería ser 'direccion'
             telefono: telefono,
             contraseña: contraseña,
-            rol: 0
+            rol: rol
         };
     
         // Realizar la solicitud POST utilizando fetch()
